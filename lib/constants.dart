@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
  ThemeData lightTheme = ThemeData(
     scaffoldBackgroundColor: Colors.white,
-    primarySwatch: Colors.deepOrange,
+    primarySwatch: Colors.blue,
     appBarTheme: AppBarTheme(
         backgroundColor: Colors.white,
         elevation: 0.0,
@@ -23,7 +23,7 @@ import 'package:flutter/services.dart';
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       type: BottomNavigationBarType.fixed,
-      selectedItemColor: primaryColor,
+      selectedItemColor: kPrimaryColor,
       unselectedItemColor: Colors.grey,
       backgroundColor: Colors.white,
       elevation: 30.0,
@@ -38,4 +38,4 @@ import 'package:flutter/services.dart';
     fontFamily: "Jannah",
 );
 
- const Color primaryColor = Colors.deepOrange;
+ const Color kPrimaryColor = Colors.blue;
