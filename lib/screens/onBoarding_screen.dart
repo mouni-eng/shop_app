@@ -3,6 +3,7 @@ import 'package:shop_app/components.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/models/onboarding_model.dart';
 import 'package:shop_app/screens/authantication/logIn_screen.dart';
+import 'package:shop_app/services/local/cache_helper.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -34,7 +35,15 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         appBar: AppBar(
           actions: [
             TextButton(onPressed: () {
-              navigateToAndFinish(context, LoginInScreen());
+              CacheHelper.saveData(
+                key: 'onBoarding',
+                value: true,
+              ).then((value)
+              {
+                if (value) {
+                  navigateToAndFinish(context, LoginInScreen());
+                }
+              });
             }, child: Text("SKIP")),
           ],
         ),
@@ -84,7 +93,15 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   FloatingActionButton(
                     onPressed: () {
                       if(isLast) {
-                        navigateToAndFinish(context, LoginInScreen());
+                        CacheHelper.saveData(
+                          key: 'onBoarding',
+                          value: true,
+                        ).then((value)
+                        {
+                          if (value) {
+                            navigateToAndFinish(context, LoginInScreen());
+                          }
+                        });
                       }
                       controller.nextPage(
                           duration: Duration(
