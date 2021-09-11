@@ -6,6 +6,8 @@ import 'package:shop_app/constants.dart';
 import 'package:shop_app/models/categorie_model.dart';
 import 'package:shop_app/models/home_model.dart';
 import 'package:shop_app/models/onboarding_model.dart';
+import 'package:shop_app/view_models/app_cubit/cubit.dart';
+
 
 Widget onBoardingBuild(OnBoardingModel model) {
   return Column(
@@ -169,7 +171,7 @@ Color chooseColor({required ToastState state}) {
   return color;
 }
 
-Widget builderHomeWidget(HomeModel? model, CategoriesModel? categoriesModel) => SingleChildScrollView(
+Widget builderHomeWidget(HomeModel? model, CategoriesModel? categoriesModel, context) => SingleChildScrollView(
   physics: BouncingScrollPhysics(),
   child: Column(
     children: [
@@ -207,7 +209,7 @@ Widget builderHomeWidget(HomeModel? model, CategoriesModel? categoriesModel) => 
             Text(
               'Categories',
               style: TextStyle(
-                fontSize: 24.0,
+                fontSize: 20.0,
                 fontWeight: FontWeight.w800,
               ),
             ),
@@ -231,27 +233,21 @@ Widget builderHomeWidget(HomeModel? model, CategoriesModel? categoriesModel) => 
             Text(
               'New Products',
               style: TextStyle(
-                fontSize: 24.0,
+                fontSize: 20.0,
                 fontWeight: FontWeight.w800,
               ),
             ),
             SizedBox(
-              height: 25.0,
+              height: 20.0,
             ),
             Container(
-              color: Colors.grey[300],
-              child: GridView.count(
-                crossAxisCount: 2,
-                shrinkWrap: true,
-                mainAxisSpacing: 1.0,
-                crossAxisSpacing: 1.0,
-                physics: NeverScrollableScrollPhysics(),
-                childAspectRatio: 1 / 1.76,
-                children: List.generate(
-                    model.data!.productsList.length,
-                        (index) =>
-                        buildProductsWidget(model.data!.productsList[index])),
-              ),
+              child: ListView.separated(
+                  physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) => buildListProduct(model.data!.productsList[index], context),
+                    separatorBuilder: (context, index) => myDivider(),
+                    itemCount: model.data!.productsList.length,
+                  ),
             ),
           ],
         ),
@@ -260,7 +256,7 @@ Widget builderHomeWidget(HomeModel? model, CategoriesModel? categoriesModel) => 
   ),
 );
 
-Widget buildProductsWidget(ProductsModel model) => Container(
+Widget buildProductsWidget(ProductsModel model, context) => Container(
   color: Colors.white,
   child: Column(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -313,10 +309,15 @@ Widget buildProductsWidget(ProductsModel model) => Container(
                   ),
                 Spacer(),
                 IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.favorite_border,
-                    size: 14.0,
+                  onPressed: () {
+                    AppCubit.get(context).changeFavourite(model.id);
+                  },
+                  icon: CircleAvatar(
+                    backgroundColor: AppCubit.get(context).favourites[model.id]! ? kPrimaryColor : Colors.grey,
+                    child: Icon(
+                      Icons.favorite_border,
+                      size: 14.0,
+                    ),
                   ),
                 ),
               ],
@@ -371,3 +372,107 @@ Widget buildCategoriesScreen(CatDataModel model) => Column(
     ),
   ],
 );
+
+Widget buildListProduct(
+    model,
+    context, {
+      bool isOldPrice = true,
+    }) =>
+    Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Container(
+        height: 120.0,
+        child: Row(
+          children: [
+            Stack(
+              alignment: AlignmentDirectional.bottomStart,
+              children: [
+                Image(
+                  image: NetworkImage(model.image),
+                  width: 120.0,
+                  height: 120.0,
+                ),
+                if (model.discount != 0 && isOldPrice)
+                  Container(
+                    color: Colors.red,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 5.0,
+                    ),
+                    child: Text(
+                      'DISCOUNT',
+                      style: TextStyle(
+                        fontSize: 8.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            SizedBox(
+              width: 20.0,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    model.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      height: 1.3,
+                    ),
+                  ),
+                  Spacer(),
+                  Row(
+                    children: [
+                      Text(
+                        model.price.toString(),
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          color: kPrimaryColor,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 5.0,
+                      ),
+                      if (model.discount != 0 && isOldPrice)
+                        Text(
+                          model.oldPrice.toString(),
+                          style: TextStyle(
+                            fontSize: 10.0,
+                            color: Colors.grey,
+                            decoration: TextDecoration.lineThrough,
+                          ),
+                        ),
+                      Spacer(),
+                      IconButton(
+                        onPressed: () {
+                          AppCubit.get(context).changeFavourite(model.id);
+                        },
+                        icon: CircleAvatar(
+                          radius: 15.0,
+                          backgroundColor:
+                          AppCubit.get(context).favourites[model.id]!
+                              ? kPrimaryColor
+                              : Colors.grey,
+                          child: Icon(
+                            Icons.favorite_border,
+                            size: 14.0,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+
+
+

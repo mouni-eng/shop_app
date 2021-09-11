@@ -7,6 +7,7 @@ import 'package:shop_app/constants.dart';
 import 'package:shop_app/screens/authantication/signUp_screen.dart';
 import 'package:shop_app/screens/layout_screens/layout_screen.dart';
 import 'package:shop_app/services/local/cache_helper.dart';
+import 'package:shop_app/view_models/app_cubit/cubit.dart';
 import 'package:shop_app/view_models/login_cubit/cubit.dart';
 import 'package:shop_app/view_models/login_cubit/states.dart';
 
@@ -28,9 +29,11 @@ class LoginInScreen extends StatelessWidget {
               ).then((value)
               {
                 if (value) {
+                  LogInCubit.get(context).getCacheData();
                   navigateToAndFinish(context, LayoutScreen());
                 }
               });
+
               showToast(
                 text: state.logInModel.message,
                 state: ToastState.SUCCESS,

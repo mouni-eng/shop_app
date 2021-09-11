@@ -4,9 +4,9 @@ import 'package:shop_app/constants.dart';
 import 'package:shop_app/services/local/cache_helper.dart';
 import 'package:shop_app/services/network/dio_helper.dart';
 import 'package:shop_app/view_models/app_cubit/cubit.dart';
-import 'package:shop_app/view_models/app_cubit/states.dart';
 import 'package:shop_app/view_models/bloc_observer.dart';
 import 'package:shop_app/view_models/login_cubit/cubit.dart';
+import 'package:shop_app/view_models/login_cubit/states.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,13 +22,13 @@ class ShopApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => LogInCubit()),
-        BlocProvider(create: (context) => AppCubit()..getCacheData()..getHomeData()..getCategoriesData()),
+        BlocProvider(create: (context) => LogInCubit()..getCacheData()),
+        BlocProvider(create: (context) => AppCubit()..getHomeData()..getCategoriesData()..getFavourites()..getProfileData()),
       ],
-      child: BlocConsumer<AppCubit, AppStates>(
+      child: BlocConsumer<LogInCubit, LogInStates>(
         listener: (context, state) {},
         builder: (context, state) {
-          Widget home = AppCubit.get(context).chooseInitialPage();
+          Widget home = LogInCubit.get(context).chooseInitialPage();
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Shop App',
