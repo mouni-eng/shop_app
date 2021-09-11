@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/components.dart';
-import 'package:shop_app/models/categorie_model.dart';
 import 'package:shop_app/view_models/app_cubit/cubit.dart';
 import 'package:shop_app/view_models/app_cubit/states.dart';
 

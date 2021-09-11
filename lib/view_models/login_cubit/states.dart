@@ -11,3 +11,5 @@ class LogInErrorState extends LogInStates{
   LogInErrorState({required this.error});
 }
 class LogInChangePasswordVisibilityState extends LogInStates{}
+
+class LogInInitialPageState extends LogInStates{}

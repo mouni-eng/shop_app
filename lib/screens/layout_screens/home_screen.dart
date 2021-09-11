@@ -11,17 +11,17 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppStates>(
+      listener: (context, state) {},
       builder: (context, state) {
         AppCubit cubit = AppCubit.get(context);
         return ConditionalBuilder(
           condition: cubit.homeModel != null && cubit.categoriesModel != null,
-          builder: (context) => builderHomeWidget(cubit.homeModel, cubit.categoriesModel),
+          builder: (context) => builderHomeWidget(cubit.homeModel, cubit.categoriesModel, context),
           fallback: (context) => Center(
             child: CircularProgressIndicator(),
           ),
         );
       },
-      listener: (context, state) {},
     );
   }
 }

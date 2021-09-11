@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shop_app/view_models/login_cubit/cubit.dart';
 
  ThemeData lightTheme = ThemeData(
     scaffoldBackgroundColor: Colors.white,
@@ -40,3 +39,5 @@ import 'package:shop_app/view_models/login_cubit/cubit.dart';
 );
 
  const Color kPrimaryColor = Colors.blue;
+
+ String? token = '';
